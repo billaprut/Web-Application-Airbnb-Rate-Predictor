@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Airbnb High Booking Rate Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 35%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        header {
+            background: #50b3a2;
+            color: white;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #e8491d 3px solid;
+        }
+
+        header a {
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        header ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            overflow: hidden;
+        }
+
+        header li {
+            float: left;
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+
+        header #branding {
+            float: left;
+        }
+
+        header #branding h1 {
+            margin: 0;
+        }
+
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+
+        header .highlight, header .current a {
+            color: #e8491d;
+            font-weight: bold;
+        }
+
+        header a:hover {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .instructions {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+
+        input[type='number'] {
+            /* Adjust the width as necessary to provide enough space for spin buttons */
+            width: 95%; /* Example: you can set to 95% or a specific pixel value */
+
+            /* Or alternatively, you can add padding on the right side to push content left */
+            padding-right: 1em; /* Adjust the padding value as needed */
+        }
+
+        /* Optionally, ensure that the input field is positioned correctly */
+        input[type='number'] {
+            position: relative; /* Set the position to relative */
+            left: 0; /* Adjust if needed to move the entire input field */
+        }
+
+        select, input[type="checkbox"] {
+            margin-bottom: 20px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #50b3a2;
+            color: white;
+            border: 0;
+        }
+
+        button:hover {
+            background-color: #e8491d;
+            cursor: pointer;
+        }
+
+        .centered-title {
+            text-align: center;
+        }
+
+
+        .radio-inline {
+            vertical-align: middle;
+            margin: 0;
+            padding: 0;
+        }
+
+        .radio-inline input[type='radio'] {
+            vertical-align: middle;
+        }
+
+        .radio-inline label {
+            padding-left: 1ch; /* Adjust the padding as needed */
+            display: inline-block;
+            margin-right: 10px; /* Space between the radio button groups */
+        }
+        
+        /* Additional styles to reset any default browser styles */
+        input[type='radio'] {
+            margin-right: 5px;
+            padding: 0;
+            border: 0;
+            vertical-align: middle;
+        }
+
+        .property-type {
+            display: inline-flex;
+            align-items: bottom;
+        }
+
+        .property-type label {
+            margin-right: 15px; /* Space between label and radio button */
+        }
+
+        #amenities {
+            font-size: 1.0em; /* Increase font size for amenities */
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 1.0em;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: bottom;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-container label {
+            margin-bottom: 18px;
+        }
+
+        #predictionResult {
+            text-align: center;
+            margin-bottom: 50px; /* Adjust the space below the response text */
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #dcdcdc;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1 class="centered-title">Airbnb High Booking Rate Predictor</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <p class="instructions">Enter details about your Airbnb listing to predict if it will be a high booking rate.</p>
+
+        <form id="bookingRateForm">
+            <!-- Property Type -->
+            <div class="form-section">
+                <div class="description">Select the type of property:</div>
+                    <div class="property-type">
+                        <input type="radio" id="house" name="property_type" value="house" class="radio-inline">
+                        <label for="house" class="radio-inline">House</label>
+                        <input type="radio" id="hotel" name="property_type" value="hotel" class="radio-inline">
+                        <label for="hotel" class="radio-inline">Hotel</label>
+                        <input type="radio" id="condo" name="property_type" value="condo" class="radio-inline">
+                        <label for="condo" class="radio-inline">Condo</label>
+                    </div>
+            </div>
+
+            <!-- Bedrooms, Beds, Bathrooms, Accommodates -->
+            <label for="bedrooms">Bedrooms (Number of bedrooms):</label>
+            <input type="number" id="bedrooms" name="bedrooms" required><br><br>
+            <label for="beds">Beds (Number of beds):</label>
+            <input type="number" id="beds" name="beds" required><br><br>
+            <label for="bathrooms">Bathrooms (Number of bathrooms):</label>
+            <input type="number" id="bathrooms" name="bathrooms" required><br><br>
+            <label for="accommodates">Accommodates (Number of guests it can accommodate):</label>
+            <input type="number" id="accommodates" name="accommodates" required><br><br>
+
+
+            <!-- Amenities -->
+            <div class="form-section">
+                <label for="amenities" class="description">Select all the amenities available:</label>
+                <select id="amenities" name="amenities" multiple>
+                    <option value="wifi">Wifi</option>
+                    <option value="air">Air Conditioning</option>
+                    <option value="heat">Heating</option>
+                    <option value="tv">TV</option>
+                    <option value="wheelchair">Wheelchair Accessible</option>
+                    <option value="pet">Pet Friendly</option>
+                    <option value="parking">Parking</option>
+                    <option value="gym">Gym</option>
+                </select>
+            </div>
+
+            <!-- Price, Cleaning Fee, Extra People, Security Deposit -->
+            <label for="price">Price (Amount in dollars):</label>
+            <input type="number" id="price" name="price" required><br><br>
+            <label for="cleaning_fee">Cleaning Fee (Amount in dollars):</label>
+            <input type="number" id="cleaning_fee" name="cleaning_fee" required><br><br>
+            <label for="extra_people">Extra People Fee (Amount per additional guest in dollars):</label>
+            <input type="number" id="extra_people" name="extra_people" required><br><br>
+
+            <!-- Security Deposit -->
+            <div class="checkbox-container">
+                <label for="security_deposit">Security Deposit (Check box if required)</label>
+                <input type="checkbox" id="security_deposit" name="security_deposit">
+            </div>
+
+            <!-- Minimum Nights, Maximum Nights, Cancellation Policy -->
+            <label for="min_nights">Minimum Nights (Minimum number of nights required for booking):</label>
+            <input type="number" id="min_nights" name="min_nights" required><br><br>
+            <label for="max_nights">Maximum Nights (Maximum number of nights allowed for booking):</label>
+            <input type="number" id="max_nights" name="max_nights" required><br><br>
+
+            <!-- Cancellation Policy -->
+            <div class="checkbox-container">
+                <label for="cancellation_policy">Cancellation Policy (Check box if No Refunds)</label>
+                <input type="checkbox" id="cancellation_policy" name="cancellation_policy">
+            </div>
+
+
+            <button type="submit">Predict Booking Rate</button>
+        </form>
+
+        <div id="predictionResult" class="result"></div>
+
+        <script>
+            document.getElementById('bookingRateForm').onsubmit = async function(e) {
+                e.preventDefault();
+
+                var amenities = Array.from(document.getElementById('amenities').selectedOptions).map(option => option.value);
+                var formData = {
+                    property_type: document.querySelector('input[name="property_type"]:checked').value,
+                    bedrooms: document.getElementById('bedrooms').value,
+                    beds: document.getElementById('beds').value,
+                    bathrooms: document.getElementById('bathrooms').value,
+                    accommodates: document.getElementById('accommodates').value,
+                    amenities: amenities,
+                    price: document.getElementById('price').value,
+                    cleaning_fee: document.getElementById('cleaning_fee').value,
+                    extra_people: document.getElementById('extra_people').value,
+                    security_deposit: document.getElementById('security_deposit').checked,
+                    cancellation_policy: document.getElementById('cancellation_policy').checked,
+                    min_nights: document.getElementById('min_nights').value,
+                    max_nights: document.getElementById('max_nights').value
+                };
+
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/predict', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    document.getElementById('predictionResult').innerText = result.prediction;
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    document.getElementById('predictionResult').innerText = 'Error fetching prediction';
+                }
+            };
+        </script>
+    </div>
+</body>
+</html>
