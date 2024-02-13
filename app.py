@@ -33,9 +33,6 @@ def index():
 def predict():
     data = request.json
 
-    # Debug: Print the received data
-    print("Received data:", data)
-
     # Adjust handling for security_deposit
     has_security_deposit_YES = 1 if data.get('security_deposit') == True else 0
     # Adjust handling for cancellation_policy_no_refunds
@@ -79,10 +76,6 @@ def predict():
 
     # Convert the input data to DataFrame
     input_df = pd.DataFrame([input_data])
-    print(input_df.dtypes)
-
-    print(input_df)
-
 
     # Make prediction
     prediction = model.predict(input_df)
